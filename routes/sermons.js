@@ -1,5 +1,6 @@
 const express = require('express');
 const router = express.Router();
+const auth = require('../middleware/auth');
 const { check, validationResult } = require('express-validator/check');
 
 const Sermon = require('../models/Sermon');
@@ -7,7 +8,7 @@ const Sermon = require('../models/Sermon');
 // @route      GET api/sermons
 // @desc       Get all users sermons
 // @access     Private
-router.get('/', async (req, res) => {
+router.get('/',auth, async (req, res) => {
   try {
     const sermons = await Sermon.find().sort({
       date: -1,
@@ -24,7 +25,7 @@ router.get('/', async (req, res) => {
 // @access     Private
 router.post(
   '/',
-  [ [check('title', 'title is required').not().isEmpty()]],
+  [auth, [check('title', 'title is required').not().isEmpty()]],
   async (req, res) => {
     const errors = validationResult(req);
     if (!errors.isEmpty()) {
@@ -52,7 +53,7 @@ router.post(
 // @route      PUT api/ sermons/:id
 // @desc       Update contact
 // @access     Private
-router.put('/:id', async (req, res) => {
+router.put('/:id',auth, async (req, res) => {
     const { title, description, content, sermonDate } = req.body;
 
   //Build contact object
@@ -83,7 +84,7 @@ router.put('/:id', async (req, res) => {
 // @route      DELETE api/sermons/:id
 // @desc       Delete contact
 // @access     Private
-router.delete('/:id', async (req, res) => {
+router.delete('/:id',auth, async (req, res) => {
   try {
     let sermon = await Sermon.findById(req.params.id);
     if (!sermon) return res.status(400).json({ msg: 'Sermon not found' });
