@@ -4,6 +4,7 @@ import SermonContext from '../../context/sermon/sermonContext';
 import SermonItem from './SermonItem';
 
 const Sermons = () => {
+  const nodeRef = React.useRef(null);
   const sermonContext = useContext(SermonContext);
 
   const { sermons, filtered } = sermonContext;
@@ -16,12 +17,22 @@ const Sermons = () => {
       <TransitionGroup>
         {filtered !== null
           ? filtered.map((sermon) => (
-              <CSSTransition key={sermon.id} timeout={500} classNames='item'>
+              <CSSTransition
+                nodeRef={nodeRef}
+                key={sermon.id}
+                timeout={500}
+                classNames='item'
+              >
                 <SermonItem sermon={sermon} />
               </CSSTransition>
             ))
           : sermons.map((sermon) => (
-              <CSSTransition key={sermon.id} timeout={500} classNames='item'>
+              <CSSTransition
+                nodeRef={nodeRef}
+                key={sermon.id}
+                timeout={500}
+                classNames='item'
+              >
                 <SermonItem sermon={sermon} />
               </CSSTransition>
             ))}
