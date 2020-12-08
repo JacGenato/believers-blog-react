@@ -6,7 +6,6 @@ const config = require('config');
 const { check, validationResult } = require('express-validator/check');
 
 const User = require('../models/User');
-const { reset } = require('nodemon');
 
 // @route      POST api/users
 // @desc       Register a user
