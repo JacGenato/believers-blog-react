@@ -8,9 +8,24 @@ const Sermon = require('../models/Sermon');
 // @route      GET api/sermons
 // @desc       Get all users sermons
 // @access     Private
-router.get('/',auth, async (req, res) => {
+router.get('/', async (req, res) => {
   try {
     const sermons = await Sermon.find().sort({
+      date: -1,
+    });
+    res.json(sermons);
+  } catch (err) {
+    console.error(err.message);
+    res.status(500).send('Server Error');
+  }
+});
+
+// @route      GET api/sermons/:id
+// @desc       Get sermon
+// @access     Private
+router.get('/:id', async (req, res) => {
+  try {
+    const sermons = await Sermon.findById(req.params.id).sort({
       date: -1,
     });
     res.json(sermons);
@@ -53,8 +68,8 @@ router.post(
 // @route      PUT api/ sermons/:id
 // @desc       Update contact
 // @access     Private
-router.put('/:id',auth, async (req, res) => {
-    const { title, description, content, sermonDate } = req.body;
+router.put('/:id', auth, async (req, res) => {
+  const { title, description, content, sermonDate } = req.body;
 
   //Build contact object
   const sermonFields = {};
@@ -66,7 +81,6 @@ router.put('/:id',auth, async (req, res) => {
   try {
     let sermon = await Sermon.findById(req.params.id);
     if (!sermon) return res.status(400).json({ msg: 'Sermon not found' });
-
 
     sermon = await Sermon.findByIdAndUpdate(
       req.params.id,
@@ -84,7 +98,7 @@ router.put('/:id',auth, async (req, res) => {
 // @route      DELETE api/sermons/:id
 // @desc       Delete contact
 // @access     Private
-router.delete('/:id',auth, async (req, res) => {
+router.delete('/:id', auth, async (req, res) => {
   try {
     let sermon = await Sermon.findById(req.params.id);
     if (!sermon) return res.status(400).json({ msg: 'Sermon not found' });
