@@ -1,7 +1,7 @@
 {
-  "name": "believers-blog",
+  "name": "believers-api",
   "version": "1.0.0",
-  "description": "Believers In Jesus Christ the Lord app",
+  "description": "API for BJCLC",
   "main": "server.js",
   "scripts": {
     "start": "node server.js",
