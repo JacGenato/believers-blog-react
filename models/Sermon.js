@@ -6,18 +6,21 @@ const SermonSchema = mongoose.Schema({
     required: true,
   },
   description: {
-    type: String
+    type: String,
   },
   content: {
-    type: String
+    type: String,
   },
   sermonDate: {
-    type: Date
+    type: Date,
   },
   datePublished: {
     type: Date,
     default: Date.now,
-  }
+  },
+  videoURL: {
+    type: String,
+  },
 });
 
 module.exports = mongoose.model('sermon', SermonSchema);

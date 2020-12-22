@@ -40,13 +40,13 @@ router.get('/:id', async (req, res) => {
 // @access     Private
 router.post(
   '/',
-  [auth, [check('title', 'title is required').not().isEmpty()]],
+  [[check('title', 'title is required').not().isEmpty()]],
   async (req, res) => {
     const errors = validationResult(req);
     if (!errors.isEmpty()) {
       return res.status(400).json({ errors: errors.array() });
     }
-    const { title, description, content, sermonDate } = req.body;
+    const { title, description, content, sermonDate, videoURL } = req.body;
 
     try {
       const newSermon = new Sermon({
@@ -54,6 +54,7 @@ router.post(
         description,
         content,
         sermonDate,
+        videoURL,
       });
 
       const sermon = await newSermon.save();
@@ -68,8 +69,8 @@ router.post(
 // @route      PUT api/ sermons/:id
 // @desc       Update contact
 // @access     Private
-router.put('/:id', auth, async (req, res) => {
-  const { title, description, content, sermonDate } = req.body;
+router.put('/:id', async (req, res) => {
+  const { title, description, content, sermonDate, videoURL } = req.body;
 
   //Build contact object
   const sermonFields = {};
@@ -77,6 +78,7 @@ router.put('/:id', auth, async (req, res) => {
   if (description) sermonFields.description = description;
   if (content) sermonFields.content = content;
   if (sermonDate) sermonFields.sermonDate = sermonDate;
+  if (videoURL) sermonFields.videoURL = videoURL;
 
   try {
     let sermon = await Sermon.findById(req.params.id);
